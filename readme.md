@@ -43,6 +43,7 @@ $ composer install
 Finally, be sure to include the autoloader in your code:
 
 ```php
+<?php
 require_once('vendor/autoload.php');
 ```
 
@@ -59,6 +60,7 @@ Additionally, to the SDK, you'll also need the fiskaly service. Follow these ste
 ### Demo
 
 ```php
+<?php
 require __DIR__ . '\\vendor\\autoload.php';
 use FiskalyClient\FiskalyClient;
 
@@ -81,6 +83,7 @@ Another way to create FiskalyClient object is using `context` string.
 You can get it via `getContext` method and save it in memory via $_SESSION variable 
 or persistent in cache or database.
 ```php
+<?php
 /** initialize the fiskaly API client class using context */
 try {
     $client = FiskalyClient::createUsingContext('http://localhost:8080/invoke', $_SESSION["FISKALY_CONTEXT"]);
@@ -100,6 +103,7 @@ A reason why you would do this, is to enable the [debug mode](https://developer.
 The following code snippet demonstrates how to enable the debug mode in the client.
 
 ```php
+<?php
 /** configure client */
 try {
     $config_params = array(
