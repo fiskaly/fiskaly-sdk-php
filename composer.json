@@ -9,7 +9,8 @@
     "require": {
         "php": ">=7.1",
         "datto/json-rpc-http": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "phpunit/phpunit": "^9.1"
     },
     "autoload": {
         "psr-4": {
