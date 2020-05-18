@@ -13,7 +13,6 @@ require_once(__DIR__ . '/../examples/env.php');
 
 class FiskalyClientTest extends TestCase
 {
-
     /**
      * @return FiskalyClient
      */
@@ -27,11 +26,33 @@ class FiskalyClientTest extends TestCase
     }
 
     /**
+     * @return FiskalyClient
+     */
+    public function createClientUsingContext()
+    {
+        try {
+            return FiskalyClient::createUsingContext($_ENV["FISKALY_SERVICE_URL"], '$_SESSION["FISKALY_CONTEXT"]');
+        } catch (Exception $e) {
+            exit($e);
+        }
+    }
+
+    /**
      * @test
      */
     public function testClient()
     {
         $client = $this->createClient();
+        $this->assertNotNull($client);
+        $this->assertTrue($client instanceof FiskalyClient);
+    }
+
+    /**
+     * @test
+     */
+    public function testClientUsingContext()
+    {
+        $client = $this->createClientUsingContext();
         $this->assertNotNull($client);
         $this->assertTrue($client instanceof FiskalyClient);
     }
