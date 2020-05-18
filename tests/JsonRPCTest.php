@@ -40,4 +40,20 @@ class JsonRPCTest extends TestCase
         $this->assertEquals(-32601, $response->getCode());
         $this->assertEquals('Method not found', $response->getMessage());
     }
+
+    public function testWrongDataQuery()
+    {
+        $this->json_rpc->query('create-context', null, $response)->send();
+
+        $this->assertNotNull($response);
+        $this->assertTrue($response instanceof ErrorResponse);
+        $this->assertEquals(-32603, $response->getCode());
+        $this->assertEquals('Internal error', $response->getMessage());
+    }
+
+    public function testUndefinedResponseQuery()
+    {
+        $this->expectErrorMessage('Cannot pass parameter 3 by reference');
+        $this->json_rpc->query('create-context', null, null)->send();
+    }
 }
