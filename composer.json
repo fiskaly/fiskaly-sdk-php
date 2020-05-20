@@ -10,7 +10,6 @@
         "php": ">=7.1",
         "datto/json-rpc-http": "*",
         "ext-json": "*",
-        "phpunit/phpunit": "^9.1"
     },
     "autoload": {
         "psr-4": {
@@ -18,6 +17,7 @@
         }
     },
     "require-dev": {
+        "phpunit/phpunit": "^9.1",
         "friendsofphp/php-cs-fixer": "^2.16"
     },
     "scripts": {
@@ -25,4 +25,4 @@
             "vendor/bin/php-cs-fixer fix"
         ]
     }
-}
+},
