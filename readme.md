@@ -32,7 +32,7 @@ Or you can manually add the package to your `composer.json` file:
 
 ```json
 "require": {
-    "fiskaly/fiskaly-src-php": "*"
+    "fiskaly/fiskaly-sdk-php": "*"
 }
 ```
 then run 
