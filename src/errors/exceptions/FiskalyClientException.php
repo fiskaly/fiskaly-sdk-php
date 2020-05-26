@@ -21,7 +21,7 @@ class FiskalyClientException extends FiskalyException
 
     public function getStatusCode()
     {
-        return $this->data;
+        return $this->code;
     }
 
     public function __toString()
