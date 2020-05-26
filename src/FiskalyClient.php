@@ -158,7 +158,6 @@ class FiskalyClient
 
     /**
      * Get fiskaly client configuration
-     * - if there is no config saved inside instance, get JsonRPC method will be invoked and configuration will be stored.
      * @return ClientConfiguration
      * @throws FiskalyClientException
      * @throws FiskalyHttpException
