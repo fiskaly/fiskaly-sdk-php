@@ -5,11 +5,11 @@
     "type": "library",
     "homepage": "https://github.com/fiskaly/fiskaly-sdk-php",
     "license": "MIT",
-    "version": "1.1.500",
+    "version": "1.1.600",
     "require": {
         "php": ">=7.1",
         "datto/json-rpc-http": "*",
-        "ext-json": "*",
+        "ext-json": "*"
     },
     "autoload": {
         "psr-4": {

@@ -25,7 +25,7 @@ use TypeError;
 class FiskalyClient
 {
     /** @var string */
-    const SDK_VERSION = '1.1.500';
+    const SDK_VERSION = '1.1.600';
 
     /** @var string */
     private $context = '';
@@ -41,9 +41,23 @@ class FiskalyClient
      */
     private function __construct($fiskaly_service)
     {
+        $this->json_rpc = new Client($fiskaly_service);
+    }
+
+
+    /**
+     * Send JSON RPC Request to Client
+     * @param $method
+     * @param $params
+     * @return mixed
+     * @throws Exception
+     */
+    private function doRequest($method, $params)
+    {
         try {
-            $this->json_rpc = new Client($fiskaly_service);
-        } catch (Exception | TypeError $e) {
+            $this->json_rpc->query($method, $params, $response)->send();
+            return $response;
+        } catch (Exception | HttpException | TypeError $e) {
             throw new Exception($e->getMessage());
         }
     }
@@ -76,13 +90,9 @@ class FiskalyClient
             throw new Exception("base_url must be provided");
         }
 
-        try {
-            $instance = new self($fiskaly_service);
-            $instance->createContext(trim($api_key), trim($api_secret), trim($base_url));
-            return $instance;
-        } catch (Exception | TypeError $e) {
-            throw new Exception($e->getMessage());
-        }
+        $instance = new self($fiskaly_service);
+        $instance->createContext(trim($api_key), trim($api_secret), trim($base_url));
+        return $instance;
     }
 
     /**
@@ -102,13 +112,9 @@ class FiskalyClient
             throw new Exception("context must be provided");
         }
 
-        try {
-            $instance = new self($fiskaly_service);
-            $instance->updateContext($context);
-            return $instance;
-        } catch (Exception | TypeError $e) {
-            throw new Exception($e->getMessage());
-        }
+        $instance = new self($fiskaly_service);
+        $instance->updateContext($context);
+        return $instance;
     }
 
 
@@ -121,19 +127,15 @@ class FiskalyClient
      */
     private function createContext($api_key, $api_secret, $base_url)
     {
-        try {
-            $contextParams = [
-                'base_url' => $base_url,
-                'api_key' => $api_key,
-                'api_secret' => $api_secret,
-                'sdk_version' => self::SDK_VERSION
-            ];
+        $contextParams = [
+            'base_url' => $base_url,
+            'api_key' => $api_key,
+            'api_secret' => $api_secret,
+            'sdk_version' => self::SDK_VERSION
+        ];
 
-            $this->json_rpc->query('create-context', $contextParams, $response)->send();
-            $this->updateContext($response['context']);
-        } catch (Exception | HttpException | TypeError $e) {
-            throw new Exception($e->getMessage());
-        }
+        $response = $this->doRequest('create-context', $contextParams);
+        $this->updateContext($response['context']);
     }
 
 
@@ -145,6 +147,7 @@ class FiskalyClient
     {
         $this->context = $context;
     }
+
 
     /**
      * Get Context
@@ -162,17 +165,14 @@ class FiskalyClient
      * @throws FiskalyClientException
      * @throws FiskalyHttpException
      * @throws FiskalyHttpTimeoutException
+     * @throws Exception
      */
     public function getConfig()
     {
-        try {
-            $params = [
-                'context' => $this->context
-            ];
-            $this->json_rpc->query('config', $params, $response)->send();
-        } catch (Exception | HttpException | TypeError $e) {
-            throw new Exception($e->getMessage());
-        }
+        $params = [
+            'context' => $this->context
+        ];
+        $response = $this->doRequest('config', $params);
 
         /** Check if error exists */
         FiskalyErrorHandler::throwOnError($response);
@@ -193,11 +193,7 @@ class FiskalyClient
      */
     public function getVersion()
     {
-        try {
-            $this->json_rpc->query('version', null, $response)->send();
-        } catch (Exception | HttpException | TypeError $e) {
-            throw new Exception($e->getMessage());
-        }
+        $response = $this->doRequest('version', null);
 
         /** Check if error exists */
         FiskalyErrorHandler::throwOnError($response);
@@ -225,11 +221,7 @@ class FiskalyClient
             'context' => $this->context
         ];
 
-        try {
-            $this->json_rpc->query('config', $params, $response)->send();
-        } catch (Exception | HttpException | TypeError $e) {
-            throw new Exception($e->getMessage());
-        }
+        $response = $this->doRequest('config', $params);
 
         /** Check if error exists */
         FiskalyErrorHandler::throwOnError($response);
@@ -242,6 +234,7 @@ class FiskalyClient
         return new ClientConfiguration($config['debug_level'], $config['debug_file'], $config['client_timeout'], $config['smaers_timeout']);
     }
 
+    
     /**
      * Execute the request
      * @param string $path
@@ -284,11 +277,7 @@ class FiskalyClient
             'context' => $this->context
         ];
 
-        try {
-            $this->json_rpc->query('request', $params, $response)->send();
-        } catch (Exception | HttpException | TypeError $e) {
-            throw new Exception($e->getMessage());
-        }
+        $response = $this->doRequest('request', $params);
 
         /** Check if error exists */
         FiskalyErrorHandler::throwOnError($response);
