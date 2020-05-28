@@ -30,7 +30,7 @@ class FiskalyErrorHandler
             if ($response->getCode() == self::$HTTP_ERROR) {
                 $responseData = $response->getData();
                 $errorBody = json_decode(base64_decode($responseData['response']['body']), true);
-                $requestId = $responseData['response']['headers']['X-Request-Id'][0];
+                $requestId = $responseData['response']['headers']['x-request-id'][0];
 
                 throw new FiskalyHttpException($errorBody['message'], $errorBody['code'], $errorBody['error'], $errorBody['status_code'], $requestId);
             } elseif ($response->getCode() == self::$HTTP_TIMEOUT_ERROR) {
