@@ -2,10 +2,6 @@
 
 namespace FiskalyClient;
 
-require_once __DIR__ . './errors/FiskalyErrorHandler.php';
-require_once __DIR__ . './responses/ClientConfiguration.php';
-require_once __DIR__ . './responses/VersionResponse.php';
-
 use Datto\JsonRpc\Http\Client;
 use Datto\JsonRpc\Http\Exceptions\HttpException;
 use Exception;
@@ -55,6 +51,7 @@ class FiskalyClient
     private function doRequest($method, $params)
     {
         try {
+            $response = null;
             $this->json_rpc->query($method, $params, $response)->send();
             return $response;
         } catch (Exception | HttpException | TypeError $e) {

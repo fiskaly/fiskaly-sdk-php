@@ -2,11 +2,6 @@
 
 namespace FiskalyClient\errors;
 
-require_once __DIR__ . './exceptions/FiskalyException.php';
-require_once __DIR__ . './exceptions/FiskalyHttpException.php';
-require_once __DIR__ . './exceptions/FiskalyHttpTimeoutException.php';
-require_once __DIR__ . './exceptions/FiskalyClientException.php';
-
 use Datto\JsonRpc\Responses\ErrorResponse;
 use FiskalyClient\errors\exceptions\FiskalyClientException;
 use FiskalyClient\errors\exceptions\FiskalyHttpException;
