@@ -5,7 +5,7 @@
     "type": "library",
     "homepage": "https://github.com/fiskaly/fiskaly-sdk-php",
     "license": "MIT",
-    "version": "1.1.601",
+    "version": "1.2.000",
     "require": {
         "php": ">=7.1",
         "datto/json-rpc-http": "*",
