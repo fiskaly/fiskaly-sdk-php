@@ -14,12 +14,11 @@ class SelfTestResponse
      * @param $backend
      * @param $smaers
      */
-    public function __construct($proxy, $backend, $smaers, $smaers_version)
+    public function __construct($proxy, $backend, $smaers)
     {
         $this->proxy = $proxy;
         $this->backend = $backend;
         $this->smaers = $smaers;
-        $this->smaers_version = $smaers_version;
     }
 
     

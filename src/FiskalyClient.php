@@ -204,7 +204,7 @@ class FiskalyClient
 
     /**
      * SelfTest
-     * @return SelfTestResponse - version information of the currently used client and SMAERS.
+     * @return SelfTestResponse - response of the selftest
      * @throws FiskalyClientException
      * @throws FiskalyHttpException
      * @throws FiskalyHttpTimeoutException
@@ -225,7 +225,7 @@ class FiskalyClient
         $backend = $response['backend'];
         $smaers = $response['smaers'];
 
-        return new VersionResponse($proxy, $backend, $smaers);
+        return new SelfTestResponse($proxy, $backend, $smaers);
     }
 
 
