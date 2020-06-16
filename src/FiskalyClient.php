@@ -12,6 +12,7 @@ use FiskalyClient\errors\FiskalyErrorHandler;
 use FiskalyClient\responses\ClientConfiguration;
 use FiskalyClient\responses\RequestResponse;
 use FiskalyClient\responses\VersionResponse;
+use FiskalyClient\responses\SelfTestResponse;
 use TypeError;
 
 /**
@@ -176,7 +177,7 @@ class FiskalyClient
 
         $config = $response['config'];
 
-        return new ClientConfiguration($config['debug_level'], $config['debug_file'], $config['client_timeout'], $config['smaers_timeout']);
+        return new ClientConfiguration($config['debug_level'], $config['debug_file'], $config['client_timeout'], $config['smaers_timeout'], $config['http_proxy']);
     }
 
 
@@ -199,6 +200,32 @@ class FiskalyClient
         $smaers = $response['smaers'];
 
         return new VersionResponse($client['version'], $client['source_hash'], $client['commit_hash'], $smaers['version']);
+    }
+
+    /**
+     * SelfTest
+     * @return SelfTestResponse - response of the selftest
+     * @throws FiskalyClientException
+     * @throws FiskalyHttpException
+     * @throws FiskalyHttpTimeoutException
+     * @throws Exception
+     */
+    public function selfTest()
+    {
+        $params = [
+            'context' => $this->context
+        ];
+
+        $response = $this->doRequest('self-test', $params);
+
+        /** Check if error exists */
+        FiskalyErrorHandler::throwOnError($response);
+
+        $proxy = $response['proxy'];
+        $backend = $response['backend'];
+        $smaers = $response['smaers'];
+
+        return new SelfTestResponse($proxy, $backend, $smaers);
     }
 
 
@@ -228,7 +255,7 @@ class FiskalyClient
 
         $config = $response['config'];
 
-        return new ClientConfiguration($config['debug_level'], $config['debug_file'], $config['client_timeout'], $config['smaers_timeout']);
+        return new ClientConfiguration($config['debug_level'], $config['debug_file'], $config['client_timeout'], $config['smaers_timeout'], $config['http_proxy']);
     }
 
     

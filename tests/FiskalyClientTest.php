@@ -7,6 +7,7 @@ use FiskalyClient\errors\exceptions\FiskalyException;
 use FiskalyClient\responses\ClientConfiguration;
 use FiskalyClient\responses\RequestResponse;
 use FiskalyClient\responses\VersionResponse;
+use FiskalyClient\responses\SelfTestResponse;
 use PHPUnit\Framework\TestCase;
 
 require_once(__DIR__ . '/../examples/env.php');
@@ -89,6 +90,25 @@ class FiskalyClientTest extends TestCase
     /**
      * @test
      */
+    public function testSelfTest()
+    {
+        try {
+            $client = $this->createClient();
+            $selftest = $client->selfTest();
+
+            $this->assertNotNull($selftest);
+            $this->assertTrue($selftest instanceof SelfTestResponse);
+            $this->assertNotNull($selftest->getProxy());
+            $this->assertNotNull($selftest->getBackend());
+            $this->assertNotNull($selftest->getSmaers());
+        } catch (Exception $e) {
+            $this->assertTrue(false);
+        }
+    }
+
+    /**
+     * @test
+     */
     public function testGetConfig()
     {
         try {
@@ -120,6 +140,7 @@ class FiskalyClientTest extends TestCase
                     'debug_file' => __DIR__ . '/../fiskaly.log',
                     'client_timeout' =>  5000,
                     'smaers_timeout' =>  2000,
+                    'http_proxy' => ""
                 ];
                 $config = $client->configure($config_params);
             } catch (Exception $e) {
@@ -132,11 +153,13 @@ class FiskalyClientTest extends TestCase
             $this->assertNotNull($config->getDebugFile());
             $this->assertNotNull($config->getDebugLevel());
             $this->assertNotNull($config->getSmearsTimeout());
+            $this->assertNotNull($config->getHttpProxy());
 
             $this->assertEquals($config_params['debug_level'], $config->getDebugLevel());
             $this->assertEquals($config_params['debug_file'], $config->getDebugFile());
             $this->assertEquals($config_params['client_timeout'], $config->getClientTimeout());
             $this->assertEquals($config_params['smaers_timeout'], $config->getSmearsTimeout());
+            $this->assertEquals($config_params['http_proxy'], $config->getHttpProxy());
         } catch (Exception $e) {
             $this->assertTrue(false);
         }
