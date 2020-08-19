@@ -22,7 +22,7 @@ use TypeError;
 class FiskalyClient
 {
     /** @var string */
-    const SDK_VERSION = '1.1.600';
+    const SDK_VERSION = '1.2.100';
 
     /** @var string */
     private $context = '';
@@ -63,33 +63,42 @@ class FiskalyClient
 
     /**
      * FiskalyClient Credentials Constructor - Construct an instance of the fiskaly API client Class
+     * @param string $fiskaly_service
      * @param $api_key
      * @param $api_secret
      * @param string $base_url
-     * @param string $fiskaly_service
+     * @param string email
+     * @param string password
+     * @param string organization_id
+     * @param string environment
      * @return FiskalyClient
      * @throws Exception
      */
-    public static function createUsingCredentials($fiskaly_service, $api_key, $api_secret, $base_url)
+    public static function createUsingCredentials($fiskaly_service, $api_key = '', $api_secret = '', $base_url, $email = '', $password = '', $organization_id = '', $environment = '')
     {
         if (empty($fiskaly_service)) {
             throw new Exception("fiskaly_service must be provided");
         }
 
-        if (empty($api_key)) {
-            throw new Exception("api_key must be provided");
+        if (empty($email)) {
+            if (empty($api_key)) {
+                throw new Exception("api_key must be provided");
+            }
+
+            if (empty($api_secret)) {
+                throw new Exception("api_secret must be provided");
+            }
+        } else if (empty($password)) {
+            throw new Exception("password must be provided in combination with email");
         }
 
-        if (empty($api_secret)) {
-            throw new Exception("api_secret must be provided");
-        }
 
         if (empty($base_url)) {
             throw new Exception("base_url must be provided");
         }
 
         $instance = new self($fiskaly_service);
-        $instance->createContext(trim($api_key), trim($api_secret), trim($base_url));
+        $instance->createContext(trim($api_key), trim($api_secret), trim($base_url), trim($email), trim($password), trim($organization_id), trim($environment));
         return $instance;
     }
 
@@ -123,12 +132,16 @@ class FiskalyClient
      * @param $base_url
      * @throws Exception
      */
-    private function createContext($api_key, $api_secret, $base_url)
+    private function createContext($api_key, $api_secret, $base_url, $email, $password, $organization_id, $environment)
     {
         $contextParams = [
             'base_url' => $base_url,
             'api_key' => $api_key,
             'api_secret' => $api_secret,
+            'email' => $email,
+            'password' => $password, 
+            'organization_id' => $organization_id,
+            'environment' => $environment,
             'sdk_version' => self::SDK_VERSION
         ];
 
@@ -261,8 +274,8 @@ class FiskalyClient
     
     /**
      * Execute the request
-     * @param string $path
      * @param string $method
+     * @param string $path
      * @param null $query
      * @param null $headers
      * @param string $body - Base64 encoded JSON.

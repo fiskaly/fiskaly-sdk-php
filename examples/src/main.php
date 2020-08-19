@@ -46,8 +46,8 @@ try {
  */
 try {
     $config_params = [
-        'debug_level' => 4,
-        'debug_file' => __DIR__ . '/../fiskaly.log',
+        'debug_level' => 3,
+        'debug_file' => '-',
         'client_timeout' =>  5000,
         'smaers_timeout' =>  2000,
     ];
@@ -73,11 +73,9 @@ try {
  */
 try {
     $response = $client->request(
-        'PUT',
-        '/tss/ecb75169-680f-48d1-93b2-52cc10abb9f/tx/9cbe6566-e24c-42ac-97fe-6a0112fb3c6',
-        ["last_revision" => "0"],
-        ["Content-Type" => "application/json"],
-        'eyJzdGF0ZSI6ICJBQ1RJVkUiLCJjbGllbnRfaWQiOiAiYTYyNzgwYjAtMTFiYi00MThhLTk3MzYtZjQ3Y2E5NzVlNTE1In0='
+        'GET',
+        '/tss',
+        ["states" => ["DISABLED", "UNINITIALIZED"]]
     );
     echo "Request response: ", $response, "\n\n";
 } catch (Exception $e) {
