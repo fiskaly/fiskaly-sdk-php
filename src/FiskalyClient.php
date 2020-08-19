@@ -274,8 +274,8 @@ class FiskalyClient
     
     /**
      * Execute the request
-     * @param string $path
      * @param string $method
+     * @param string $path
      * @param null $query
      * @param null $headers
      * @param string $body - Base64 encoded JSON.
