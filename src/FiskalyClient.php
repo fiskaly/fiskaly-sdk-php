@@ -74,7 +74,7 @@ class FiskalyClient
      * @return FiskalyClient
      * @throws Exception
      */
-    public static function createUsingCredentials($fiskaly_service, $api_key = '', $api_secret = '', $base_url, $email = '', $password = '', $organization_id = '', $environment = '')
+    public static function createUsingCredentials($fiskaly_service, $api_key = '', $api_secret = '', $base_url = '', $email = '', $password = '', $organization_id = '', $environment = '')
     {
         if (empty($fiskaly_service)) {
             throw new Exception("fiskaly_service must be provided");
