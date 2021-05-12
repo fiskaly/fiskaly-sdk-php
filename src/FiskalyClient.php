@@ -22,7 +22,7 @@ use TypeError;
 class FiskalyClient
 {
     /** @var string */
-    const SDK_VERSION = '1.2.100';
+    const SDK_VERSION = '1.2.200';
 
     /** @var string */
     private $context = '';
